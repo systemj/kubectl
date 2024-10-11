@@ -93,6 +93,7 @@ source <(stern --completion=bash)
 source /usr/share/bash-completion/completions/kubectx
 source /usr/share/bash-completion/completions/kubens
 source /usr/share/bash-completion/completions/complete_alias
+complete -C /usr/local/bin/tofu tofu
 
 alias k=kubectl
 alias kctx=kubectx
