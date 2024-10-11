@@ -11,5 +11,5 @@ DOCKER_BUILDKIT=1 docker build -t kubectl .
 ## launch
 Example using an existing kube config:
 ```bash
-docker run -i -t --rm -v"$(HOME)/.kube:/home/user/.kube" kubectl:latest
+docker run -i -t --rm -v"${HOME}/.kube:/home/user/.kube" kubectl:latest
 ```

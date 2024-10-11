@@ -1,11 +1,12 @@
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 # default args (versions)
 ARG ARCH=amd64
-ARG KUBECTL_VERSION=1.28.7
-ARG HELM_VERSION=3.14.3
-ARG STERN_VERSION=1.28.0
+ARG KUBECTL_VERSION=1.30.4
+ARG HELM_VERSION=3.16.2
+ARG STERN_VERSION=1.31.0
 ARG KUBECTX_VERSION=0.9.5
+ARG OPENTOFU_VERSION=1.8.3
 
 # environment setup
 ENV DEBIAN_FRONTEND=noninteractive
@@ -14,6 +15,7 @@ ENV KUBECTL_VERSION=${KUBECTL_VERSION}
 ENV HELM_VERSION=${HELM_VERSION}
 ENV STERN_VERSION=${STERN_VERSION}
 ENV KUBECTX_VERSION=${KUBECTX_VERSION}
+ENV OPENTOFU_VERSION=${OPENTOFU_VERSION}
 
 # base updates and os packages
 RUN --mount=type=cache,id=apt-cache,target=/var/cache/apt,sharing=locked \
@@ -65,6 +67,14 @@ RUN <<EOF
     curl -L -o /usr/share/bash-completion/completions/kubens "https://raw.githubusercontent.com/ahmetb/kubectx/master/completion/kubens.bash"
 EOF
 
+# opentofu
+# install: https://opentofu.org/docs/intro/install/standalone/
+# releases: https://github.com/opentofu/opentofu/releases
+RUN <<EOF
+    curl -L -o - "https://github.com/opentofu/opentofu/releases/download/v${OPENTOFU_VERSION}/tofu_${OPENTOFU_VERSION}_linux_${ARCH}.tar.gz" | \
+        tar -C /usr/local/bin -zxvf - tofu
+EOF
+
 # complete_alias
 # install: https://github.com/cykerway/complete-alias?tab=readme-ov-file#install
 RUN <<EOF
@@ -74,8 +84,7 @@ EOF
 # non-root user setup
 # odd indent due to nested heredocs
 RUN <<EOF
-    useradd -m user
-    cat <<END >>/home/user/.bashrc
+    cat <<END >>/home/ubuntu/.bashrc
 
 source /usr/share/bash-completion/bash_completion
 source <(kubectl completion bash)
@@ -95,5 +104,5 @@ complete -F _complete_alias kns
 END
 EOF
 
-WORKDIR /home/user
-USER user
+WORKDIR /home/ubuntu
+USER ubuntu
