@@ -2,11 +2,11 @@ FROM ubuntu:24.04
 
 # default args (versions)
 ARG ARCH=amd64
-ARG KUBECTL_VERSION=1.30.4
-ARG HELM_VERSION=3.16.2
-ARG STERN_VERSION=1.31.0
+ARG KUBECTL_VERSION=1.31.6
+ARG HELM_VERSION=3.17.2
+ARG STERN_VERSION=1.32.0
 ARG KUBECTX_VERSION=0.9.5
-ARG OPENTOFU_VERSION=1.8.3
+ARG OPENTOFU_VERSION=1.9.0
 
 # environment setup
 ENV DEBIAN_FRONTEND=noninteractive
@@ -63,7 +63,7 @@ RUN <<EOF
         tar -C /usr/local/bin -zxvf - kubectx
     curl -L -o - "https://github.com/ahmetb/kubectx/releases/download/v${KUBECTX_VERSION}/kubens_v${KUBECTX_VERSION}_linux_${MACH}.tar.gz" | \
         tar -C /usr/local/bin -zxvf - kubens
-    curl -L -o /usr/share/bash-completion/completions/kubectx "https://raw.githubusercontent.com/ahmetb/kubectx/master/completion/kubectx.bash" 
+    curl -L -o /usr/share/bash-completion/completions/kubectx "https://raw.githubusercontent.com/ahmetb/kubectx/master/completion/kubectx.bash"
     curl -L -o /usr/share/bash-completion/completions/kubens "https://raw.githubusercontent.com/ahmetb/kubectx/master/completion/kubens.bash"
 EOF
 
